@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - FaceAuth</title>
+    <link rel="stylesheet" href="/css/register-styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="left-section">
+            <h1>Register</h1>
+            <p>Please ensure your face is well-lit and clearly visible in the frame. Follow the instructions below:</p>
+            <ul>
+                <li>> Ensure adequate lighting</li>
+                <li>> Face the camera directly</li>
+                <li>> Avoid wearing hats or sunglasses</li>
+            </ul>
+        </div>
+        <div class="right-section">
+            <button id="open-video-btn" class="btn-glass">Open Camera</button>
+        </div>
+    </div>
+
+    <div id="video-popup" class="popup">
+        <div class="popup-content">
+            <video id="video" width="640" height="480" autoplay></video>
+            <img id="captured-image" style="display: none;" />
+            <button id="capture-btn" class="btn-glass">Capture</button>
+            <form id="register-form" action="/register" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="image" id="image">
+                <button type="submit" class="btn-glass">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <canvas id="canvas" width="640" height="480" style="display:none;"></canvas>
+
+    <script src="/js/register.js"></script>
+</body>
+</html>

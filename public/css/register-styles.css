@@ -1,0 +1,179 @@
+@import url('https://fonts.googleapis.com/css?family=Manrope:700|Manrope:400');
+
+:root {
+  --text: hsl(0, 0%, 10%);
+  --textDim: hsl(0, 0%, 40%);
+  --background: url('/images/bgimage-1.jpg') no-repeat center center fixed;
+  --background-size: cover;
+  --primary: hsl(155, 100%, 65%);
+  --primaryBg: hsla(155, 100%, 65%, 1%);
+  --primaryHi: hsla(155, 100%, 75%, 25%);
+  --primaryFg: hsl(155, 100%, 35%);
+  --glassBg: rgba(255, 255, 255, 0.3);
+  --glassBorder: rgba(255, 255, 255, 0.4);
+  --glassShadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+body {
+  font-family: 'Manrope', sans-serif;
+  background: var(--background);
+  background-size: var(--background-size);
+  color: var(--text);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  overflow: hidden;
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 80%;
+  max-width: 1200px;
+  backdrop-filter: blur(10px);
+  background: var(--glassBg);
+  border: 1px solid var(--glassBorder);
+  box-shadow: var(--glassShadow);
+  padding: 40px;
+  border-radius: 20px;
+}
+
+.left-section, .right-section {
+  flex: 1;
+  padding: 20px;
+}
+
+.left-section h1 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  color: var(--primaryFg);
+  text-align: center;
+}
+
+.left-section p {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  color: var(--textDim);
+}
+
+.left-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.left-section ul li {
+  margin-bottom: 10px;
+  color: var(--textDim);
+}
+
+.right-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn-glass {
+  background: var(--glassBg);
+  border: 1px solid var(--glassBorder);
+  color: var(--text);
+  padding: 15px 30px;
+  border-radius: 30px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.btn-glass::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0));
+  z-index: -1;
+  transition: opacity 0.3s ease;
+  opacity: 0;
+}
+
+.btn-glass:hover::before {
+  opacity: 1;
+}
+
+.btn-glass::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 30px;
+  border: 2px solid var(--primary);
+  box-shadow: 0 0 20px var(--primary);
+  opacity: 0;
+  transition: opacity 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-glass:hover::after {
+  opacity: 1;
+  box-shadow: 0 0 30px var(--primary);
+}
+
+#video-popup {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+}
+
+.popup-content {
+  background: var(--glassBg);
+  border: 1px solid var(--glassBorder);
+  box-shadow: var(--glassShadow);
+  padding: 20px;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.close-popup {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--primaryFg);
+  transition: color 0.3s ease;
+}
+
+.close-popup:hover {
+  color: var(--primary);
+}
+
+#video {
+  border-radius: 15px;
+  margin-bottom: 20px;
+}
+
+#captured-image {
+  display: none;
+  margin-top: 20px;
+  border-radius: 15px;
+  width: 100%;
+  height: auto;
+}

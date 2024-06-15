@@ -8,6 +8,12 @@ facial-auth-system/
 │   └── User.js
 ├── public/
 │   ├── css/
+│        ├── styles.css
+         ├── register-styles.css
+│   ├── fonts/
+│       ├── Galber.otf
+│   ├── images/
+│       ├── hero-bg1.jpg
 │   └── js/
 │       ├── faceRecognition.js
 │       └── webcam.js
@@ -16,8 +22,10 @@ facial-auth-system/
 │   └── user.js
 ├── views/
 │   ├── login.ejs
+│   ├── index.ejs
 │   ├── register.ejs
 │   └── dashboard.ejs
+├── uploads/
 ├── .env
 ├── app.js
 ├── package.json
