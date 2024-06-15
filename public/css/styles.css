@@ -1,0 +1,224 @@
+@font-face
+{
+	font-family: 'Galber';
+	src: url('../public/fonts/Galber.otf');
+}
+
+/* General Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Raleway', sans-serif;
+}
+
+body {
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+
+@media screen and (max-width: 1520px) {
+    body {
+        background-size: 100% auto;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    body {
+        background-size: cover;
+    }
+}
+
+
+
+body::-webkit-scrollbar{
+	display: none;
+}
+
+.container {
+    width: 80%;
+    margin: auto;
+    overflow: hidden;
+}
+
+/* Navbar Styles */
+.navbar {
+    background: rgb(6 6 6 / 30%);
+    color: #fff;
+    padding: 15px 0;
+    position: fixed;
+    width: 100%;
+    top: 5px;
+    left: 5px;
+    z-index: 1000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+    transition: background 0.3s;
+}
+
+.navbar .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar .logo {
+    font-size: 30px;
+    font-weight: bold;
+    font-family: 'Orbitron', sans-serif;
+    color: #fff;
+    transition: color 0.3s;
+    margin-left: -8px;
+    overflow: hidden;
+}
+
+.navbar nav {
+    flex: 1;
+    text-align: right;
+}
+
+.navbar .nav-links {
+    list-style: none;
+    display: flex;
+    margin-left: 350px;
+}
+
+.navbar .nav-links li {
+    margin: 0 15px;
+}
+
+.navbar .nav-links a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 5px 10px;
+    font-family: 'Orbitron', sans-serif;
+    transition: color 0.3s, transform 0.3s;
+}
+
+.navbar .nav-links a:hover {
+    color: #b832fa;
+    transform: scale(1.1);
+}
+
+/* Hero Section Styles */
+.hero {
+    background: url('/images/hero-bg1.jpg') no-repeat center center/cover;
+    color: #fff;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding-top: 80px;
+    overflow: hidden;
+}
+
+.hero .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.hero h1 {
+    font-size: 48px;
+    margin-bottom: 20px;
+    font-family: 'Orbitron', sans-serif;
+    color: white; /*rgba(255, 255, 255, 0.85); Updated color */
+    /* text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7); /* Added text shadow */
+    animation: sandAnimation 2s ease-out;
+}
+
+.hero p {
+    font-size: 20px;
+    margin-bottom: 40px;
+    font-family: 'Raleway', sans-serif;
+    color: white; /*rgba(255, 255, 255, 0.85); Updated color */
+    /* text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7); /* Added text shadow */
+    animation: sandAnimation 2s ease-out;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #6b4eff, #b832fa);
+    color: #fff;
+    padding: 15px 30px; /* Increased padding for better visibility */
+    text-decoration: none;
+    border-radius: 50px;
+    font-weight: bold;
+    font-family: 'Orbitron', sans-serif;
+    transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+    animation: sandAnimation 2s ease-out;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #b832fa, #6b4eff);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+
+/* Footer Styles */
+footer {
+    background: #333;
+    color: #fff;
+    text-align: center;
+    padding: 20px 0;
+}
+
+/* Animations */
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    .navbar .container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .navbar nav {
+        text-align: left;
+        margin-top: 10px;
+    }
+
+    .navbar .nav-links {
+        flex-direction: column;
+        width: 100%;
+
+    }
+
+    .navbar .nav-links li {
+        margin: 5px 0;
+    }
+
+    .hero h1 {
+        font-size: 36px;
+    }
+
+    .hero p {
+        font-size: 18px;
+    }
+}

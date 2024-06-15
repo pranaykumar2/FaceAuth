@@ -1,0 +1,24 @@
+facial-auth-system/
+├── config/
+│   └── keys.js
+├── controllers/
+│   ├── authController.js
+│   └── userController.js
+├── models/
+│   └── User.js
+├── public/
+│   ├── css/
+│   └── js/
+│       ├── faceRecognition.js
+│       └── webcam.js
+├── routes/
+│   ├── auth.js
+│   └── user.js
+├── views/
+│   ├── login.ejs
+│   ├── register.ejs
+│   └── dashboard.ejs
+├── .env
+├── app.js
+├── package.json
+└── README.md
