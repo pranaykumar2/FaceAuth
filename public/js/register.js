@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const openVideoBtn = document.getElementById('open-video-btn');
   const closePopupBtn = document.getElementById('close-popup');
   const capturedImage = document.getElementById('captured-image');
+  const notification = document.getElementById('notification'); // Get the notification element
 
   let stream;
 
@@ -34,12 +35,37 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // Close the video popup when clicking the close button
+  closePopupBtn.addEventListener('click', () => {
+    stopVideoStream();
+    videoPopup.style.display = 'none';
+  });
+
   // Capture or recapture the image
   captureBtn.addEventListener('click', () => {
     if (captureBtn.textContent === 'Capture') {
       captureImage();
     } else if (captureBtn.textContent === 'Re-capture') {
       enableVideoStream();
+    }
+  });
+
+  registerForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new FormData(registerForm);
+    try {
+      const response = await fetch('/register', {
+        method: 'POST',
+        body: formData
+      });
+      if (response.ok) {
+        showNotification('Image uploaded successfully'); // Call showNotification on success
+      } else {
+        throw new Error('Failed to upload image');
+      }
+    } catch (err) {
+      console.error(err);
+      showNotification('Failed to upload image');
     }
   });
 
@@ -82,5 +108,14 @@ document.addEventListener('DOMContentLoaded', () => {
       stream.getTracks().forEach(track => track.stop());
       video.srcObject = null;
     }
+  }
+
+  // Function to show notification
+  function showNotification(message) {
+    notification.innerText = message;
+    notification.classList.add('show');
+    setTimeout(() => {
+      notification.classList.remove('show');
+    }, 3000);
   }
 });

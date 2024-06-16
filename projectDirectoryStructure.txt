@@ -16,9 +16,11 @@ facial-auth-system/
 │       ├── hero-bg1.jpg
 │   └── js/
 │       ├── faceRecognition.js
+        ├── register.js
 │       └── webcam.js
 ├── routes/
 │   ├── auth.js
+    ├── home.js
 │   └── user.js
 ├── views/
 │   ├── login.ejs

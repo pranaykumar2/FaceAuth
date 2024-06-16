@@ -6,10 +6,10 @@ const path = require('path');
 
 // Multer setup
 const storage = multer.diskStorage({
-    destination: function(req, file, cb) {
+    destination: function (req, file, cb) {
         cb(null, 'uploads/');
     },
-    filename: function(req, file, cb) {
+    filename: function (req, file, cb) {
         cb(null, Date.now() + path.extname(file.originalname)); // Appends extension
     }
 });
@@ -34,19 +34,20 @@ app.get('/register', (req, res) => {
 });
 
 app.post('/register', upload.single('image'), (req, res) => {
-  const imageData = req.body.image;
-  const base64Data = imageData.replace(/^data:image\/png;base64,/, "");
-
-  // Save the image
-  fs.writeFile('uploads/' + Date.now() + '.png', base64Data, 'base64', (err) => {
-    if (err) {
-      console.error(err);
-      return res.status(500).send('Server error');
-    }
-
-    res.send('Image uploaded successfully');
-  });
+    const imageData = req.body.image;
+    const base64Data = imageData.replace(/^data:image\/png;base64,/, "");
+    const imageName = Date.now() + '.png'; // Get the filename
+    const imagePath = path.join(__dirname, 'uploads', imageName); // Construct the image path
+    fs.writeFile(imagePath, base64Data, 'base64', (err) => {
+        if (err) {
+            console.error(err);
+            res.status(500).json({ error: 'Server error' });
+        } else {
+            res.status(200).json({ message: 'Image uploaded successfully' });
+        }
+    });
 });
+
 
 // Start the server
 const PORT = process.env.PORT || 3000;
