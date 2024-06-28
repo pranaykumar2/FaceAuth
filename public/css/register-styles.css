@@ -1,6 +1,6 @@
 @font-face {
   font-family: 'Euclid Circular A';
-  src: url('/fonts/Euclid.ttf') format('truetype');
+  src: url('/fonts/Euclid Circular A Semibold.ttf') format('truetype');
 }
 
 @font-face {
@@ -73,7 +73,7 @@ li::marker {
   justify-content: center;
   align-items: center;
   background-color: #00ED64;
-  font-family: 'Euclid Circular A';
+  font-family: Euclid Circular A;
   height: 50px;
   width: 220px;
   border: 1px solid black;
@@ -94,7 +94,7 @@ li::marker {
   justify-content: center;
   align-items: center;
   background-color: #00ED64;
-  font-family: 'Euclid Circular A';
+  font-family: Euclid Circular A;
   height: 50px;
   width: 220px;
   border: 1px solid black;
@@ -192,7 +192,8 @@ li::marker {
 input[type="text"],
 input[type="password"] {
   background-color: none;
-  color: white;
+  color: black;
+  font-family: Montserrat;
   border: 1px solid black;
   padding: 10px;
   margin: 10px 0;
@@ -205,7 +206,7 @@ input[type="password"] {
   justify-content: center;
   align-items: center;
   background-color: #00ED64;
-  font-family: 'Euclid Circular A';
+  font-family: Euclid Circular A;
   height: 50px;
   width: 220px;
   border: 1px solid black;
@@ -337,7 +338,7 @@ input[type="password"] {
   display: inline-block;
   padding: 8px 16px;
   font-size: 16px;
-  font-family: 'Euclid Circular A';
+  font-family: Euclid Circular A;
   color: #fff;
   background-color: #00ED64;
   border: none;
