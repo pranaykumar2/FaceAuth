@@ -1,87 +1,140 @@
-const express = require('express');
-const app = express();
-const mongoose = require('mongoose');
-const multer = require('multer');
-const fs = require('fs');
-const path = require('path');
-const keys = require('./config/keys');
-const authController = require('./controllers/authController');
-const userController = require('./controllers/userController');
-const User = require('./models/User');
+document.addEventListener('DOMContentLoaded', () => {
+  window.onload = function() {
+    setTimeout(function() {
+      document.getElementById('popup').classList.add('slideIn');
+    }, 1000);
 
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, 'uploads/');
-    },
-    filename: function (req, file, cb) {
-        cb(null, Date.now() + path.extname(file.originalname));
-    }
-});
-const upload = multer({ storage: storage });
+    const letsGoButton = document.querySelector('.button button');
+    letsGoButton.addEventListener('click', function() {
+      document.querySelector('.flip-container').classList.toggle('flipped');
+      document.querySelector('.back').style.display = 'flex';
+    });
 
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const captureBtn = document.getElementById('capture-btn');
+    const registerForm = document.getElementById('register-form');
+    const imageInput = document.getElementById('image');
+    const videoPopup = document.getElementById('video-popup');
+    const openVideoBtn = document.getElementById('open-video-btn');
+    const closePopupBtn = document.getElementById('save-btn');
+    const capturedImage = document.getElementById('captured-image');
+    const notification = document.getElementById('notification');
 
-mongoose.connect(keys.mongoURI)
-    .then(() => console.log('MongoDB connected'))
-    .catch(err => console.log(err));
+    let stream;
 
-app.use(express.urlencoded({ extended: true, limit: '50mb' }));
-app.use(express.json({ limit: '50mb' }));
-
-
-app.use(express.static(path.join(__dirname, 'public')));
-
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
-
-app.get('/', (req, res) => {
-    res.render('index');
-});
-
-app.get('/register', (req, res) => {
-    res.render('register');
-});
-
-app.post('/register', upload.single('image'), async (req, res) => {
-    try {
-        const { username, password } = req.body;
-        let imageDataArray = req.body.image;
-
-        if (Array.isArray(imageDataArray) && imageDataArray.length > 0 && typeof imageDataArray[0] === 'string') {
-            imageData = imageDataArray[0].replace(/^data:image\/png;base64,/, "");
-        } else {
-            console.error('Invalid image data format:', imageDataArray);
-            return res.status(400).json({ error: 'Invalid image data format' });
-        }
-
-        const imageName = Date.now() + '.png';
-        const imagePath = path.join(__dirname, 'uploads', imageName);
-
-        fs.writeFile(imagePath, imageData, 'base64', async (err) => {
-            if (err) {
-                console.error(err);
-                return res.status(500).json({ error: 'Server error' });
-            }
-
-            const user = new User({ username, password, imagePath });
-            await user.save();
-            res.status(200).json({ message: 'User registered successfully', imageUrl: `/uploads/${imageName}` });
+    openVideoBtn.addEventListener('click', (event) => {
+      event.preventDefault();
+      videoPopup.style.display = 'flex';
+      navigator.mediaDevices.getUserMedia({ video: true })
+        .then(s => {
+          stream = s;
+          video.srcObject = stream;
+          video.style.display = 'block';
+          capturedImage.style.display = 'none';
+        })
+        .catch(err => {
+          console.error("Error accessing the camera: " + err);
         });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Server error' });
+    });
+
+    videoPopup.addEventListener('click', (e) => {
+      if (e.target === videoPopup || e.target === closePopupBtn) {
+        stopVideoStream();
+        videoPopup.style.display = 'none';
+      }
+    });
+
+    captureBtn.addEventListener('click', () => {
+      if (captureBtn.textContent === 'Capture') {
+        captureImage();
+      } else if (captureBtn.textContent === 'Re-capture') {
+        enableVideoStream();
+      }
+    });
+
+    registerForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(registerForm);
+      formData.append('image', imageInput.value); // Append the image data to the form data
+
+      try {
+        const response = await fetch('/register', {
+          method: 'POST',
+          body: formData
+        });
+        if (response.ok) {
+          showNotification('Image uploaded successfully'); // Call showNotification on success
+        } else {
+          throw new Error('Failed to upload image');
+        }
+      } catch (err) {
+        console.error(err);
+        showNotification('Failed to upload image');
+      }
+    });
+
+    // Capture the image from the video stream
+    function captureImage() {
+      const context = canvas.getContext('2d');
+      context.drawImage(video, 0, 0, canvas.width, canvas.height);
+      const dataUrl = canvas.toDataURL('image/png');
+      imageInput.value = dataUrl;
+
+      // Update the form with the "Show Image" link and image preview
+      const imagePreviewSection = document.getElementById('image-preview-section');
+      imagePreviewSection.innerHTML = `<a href="#" id="show-image-link" target="_blank">Show Image</a><img id="preview-image" src="${dataUrl}" alt="Captured Image Preview" style="max-width: 100%; display: none;">`;
+      imagePreviewSection.style.display = 'block';
+
+      // Add event listener to the "Show Image" link
+      const showImageLink = document.getElementById('show-image-link');
+      const previewImage = document.getElementById('preview-image');
+      showImageLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        previewImage.style.display = previewImage.style.display === 'none' ? 'block' : 'none';
+      });
+
+      // Display the captured image
+      capturedImage.src = dataUrl;
+      capturedImage.style.display = 'block';
+      video.style.display = 'none';
+
+      stopVideoStream();
+      captureBtn.textContent = 'Re-capture';
     }
-});
 
+    // Enable video stream for re-capture
+    function enableVideoStream() {
+      navigator.mediaDevices.getUserMedia({ video: true })
+        .then(s => {
+          stream = s;
+          video.srcObject = stream;
+          captureBtn.textContent = 'Capture';
 
-app.post('/login', authController.loginUser);
+          // Hide the captured image
+          capturedImage.style.display = 'none';
+          video.style.display = 'block';
+        })
+        .catch(err => {
+          console.error("Error accessing the camera: " + err);
+        });
+    }
 
-app.post('/logout', authController.logoutUser);
+    // Stop the video stream
+    function stopVideoStream() {
+      if (stream) {
+        stream.getTracks().forEach(track => track.stop());
+        video.srcObject = null;
+      }
+    }
 
-app.post('/processImage', userController.processImage);
-
-app.post('/authenticate', userController.authenticateUser);
-
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+    // Function to show notification
+    function showNotification(message) {
+      notification.innerText = message;
+      notification.classList.add('show');
+      setTimeout(() => {
+        notification.classList.remove('show');
+      }, 3000);
+    }
+  }
 });
